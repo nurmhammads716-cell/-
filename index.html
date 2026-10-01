@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>হাংরি স্নেক</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07121f;--pn:#10233a;--tx:#e8f4ff;--ac:#7dff6b;--mu:#8aa6c2;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font-family:'Hind Siliguri',system-ui,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none}
+#stg{position:fixed;left:0;top:0;width:100vw;height:100vh;transform-origin:0 0}
+canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none}
+.ov{position:fixed;inset:0;display:flex;align-items:center;justify-content:safe center;flex-direction:column;gap:14px;touch-action:pan-y;background:rgba(7,18,31,.72);backdrop-filter:blur(3px);padding:16px;text-align:center;overflow:auto}
+.hide{display:none!important}
+h1{margin:0;font-size:clamp(38px,10vw,72px);line-height:1.05;color:var(--ac);letter-spacing:-1px;text-shadow:0 4px 0 #1c5a2a}
+.sub{color:var(--mu);margin-top:-8px}
+button,input{font:inherit;color:var(--tx)}
+button{border:0;border-radius:14px;background:var(--pn);padding:10px 18px;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.big{background:var(--ac);color:#06230c;font-weight:700;font-size:26px;padding:12px 44px;border-radius:40px;box-shadow:0 6px 0 #2f9a3f}
+.big:active{transform:translateY(4px);box-shadow:0 2px 0 #2f9a3f}
+input[type=text]{background:var(--pn);border:2px solid #20405f;border-radius:12px;padding:10px 14px;text-align:center;width:220px}
+#sks{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:min(92vw,720px)}
+.sk{display:flex;flex-direction:column;align-items:center;gap:4px;width:84px;font-size:13px;padding:8px 4px;border:2px solid transparent}
+.sk i{display:block;width:56px;height:16px;border-radius:10px}
+.sk.on{border-color:var(--ac);background:#16344f}
+.card{background:var(--pn);border-radius:18px;padding:18px 22px;display:flex;flex-direction:column;gap:14px;min-width:min(320px,90vw);text-align:left}
+.card label{display:flex;justify-content:space-between;align-items:center;gap:12px}
+#hud{position:fixed;left:12px;top:calc(10px + env(safe-area-inset-top,0px));font-weight:700;font-size:20px;pointer-events:none;text-shadow:0 2px 4px #000}
+#lb{position:fixed;right:12px;top:calc(10px + env(safe-area-inset-top,0px));font-size:14px;min-width:130px;background:rgba(7,18,31,.55);border-radius:12px;padding:8px 10px;pointer-events:none}
+#lb div{display:flex;justify-content:space-between;gap:10px}#lb .me{color:var(--ac);font-weight:700}
+.pad{position:absolute;left:0;top:0;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .15s;backdrop-filter:blur(6px);background:rgba(255,255,255,.06)}.pad svg{display:block}
+#pb{position:fixed;right:118px;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px}
+#pb button{position:relative;width:46px;height:46px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.4);backdrop-filter:blur(6px)}
+#fx{position:fixed;left:12px;top:calc(44px + env(safe-area-inset-top,0px));display:flex;gap:6px;pointer-events:none}
+.ib{position:absolute;width:52px;height:52px;border-radius:50%;padding:0;background:rgba(255,255,255,.12);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center}.ib svg{width:28px;height:28px}
+.pbuy{font-size:13px;padding:8px 12px;line-height:1.3}
+#pb b{position:absolute;right:-4px;top:-6px;background:var(--ac);color:#06230c;border-radius:10px;font-size:12px;padding:0 5px}
+#stg.sm h1{font-size:30px!important}#stg.sm .ov{gap:6px;padding:8px}#stg.sm .sk{width:66px;font-size:11px;padding:4px}#stg.sm .sk i{width:42px;height:10px}#stg.sm .big{font-size:20px;padding:8px 30px}#stg.sm .sub{font-size:13px}
+#gh{position:absolute;width:90px;height:112px;margin:-56px 0 0 -45px;pointer-events:none;opacity:0;z-index:9}
+#gh.go{animation:gh 1.4s ease-out forwards}
+@keyframes gh{0%{opacity:0;transform:translateY(0) scale(.2)}18%{opacity:1;transform:translateY(-10px) scale(1.3)}32%{transform:translateY(-14px) scale(1)}100%{opacity:0;transform:translateY(-110px) scale(1)}}
+@media(prefers-reduced-motion:reduce){#gh.go{animation-duration:.01s}}
+#kf{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));transform:translateX(-50%);pointer-events:none;text-align:center}
+#kf div{background:rgba(7,18,31,.72);border:1px solid #ff5a5a88;border-radius:14px;padding:6px 14px;margin-bottom:6px;font-weight:700;animation:kf 2.7s forwards}
+@keyframes kf{0%{opacity:0;transform:translateY(-8px)}10%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
+</style></head><body><div id="stg">
+<canvas id="c"></canvas>
+<div id="hud" class="hide"></div><div id="lb" class="hide"></div><div id="fx"></div><div id="kf"></div>
+<div id="jy" class="pad"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="#fff" fill-opacity=".12" stroke="#fff" stroke-opacity=".55" stroke-width="3"/><circle id="kn" cx="60" cy="60" r="24" fill="#fff" fill-opacity=".5"/></svg></div>
+<div id="bt" class="pad"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="#fff" fill-opacity=".12" stroke="#fff" stroke-opacity=".55" stroke-width="3"/><path d="M66 20 38 66h20l-6 34 30-48H62z" fill="#fff" fill-opacity=".85"/></svg></div>
+<div id="pb" class="hide"></div>
+
+<div id="menu" class="ov"><h1>হাংরি স্নেক</h1><div class="sub">খাও, বড় হও, সবাইকে হারাও</div>
+<button id="play" class="big">খেলা শুরু</button><div id="best" class="sub"></div>
+<div id="coin" class="sub" style="position:absolute;right:16px;top:12px;margin:0;font-size:18px"></div>
+<button id="shb" class="ib" style="left:16px;bottom:16px" aria-label="শপ"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11h10.2L20 7H6.2"/><circle cx="9" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/></svg></button>
+<button id="st" class="ib" style="right:16px;bottom:16px" aria-label="সেটিং"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg></button>
+</div>
+<div id="shop" class="ov hide"><h1 style="font-size:36px">শপ</h1><div id="wal" class="sub" style="margin:0;font-size:18px"></div>
+<div id="sks"></div><div id="shp" style="display:flex;gap:10px"></div><div id="msg" class="sub" style="margin:0;min-height:20px"></div>
+<button id="shback" class="big" style="font-size:20px">ফিরে যাও</button></div>
+
+<div id="set" class="ov hide"><h1 style="font-size:40px">সেটিং</h1>
+<div class="card">
+<label>নাম <input id="nm" type="text" maxlength="12" placeholder="তোমার নাম" style="width:150px"></label>
+<label>NPC সাপ <span><input id="sb" type="range" min="4" max="20"> <b id="sbv"></b></span></label>
+<label>শব্দ <input id="ss" type="checkbox"></label>
+<label>গ্রিড <input id="sg" type="checkbox"></label>
+<div class="sub" style="margin:0">ডান দিকে চাপলে জয়স্টিক আসবে, বাঁ দিকে চাপলে স্পিড বাটন আসবে। পোশন চাপলে ৮ সেকেন্ড ফ্রি স্পিড আর খাবার টানবে।</div>
+</div><button id="sback" class="big" style="font-size:20px">ফিরে যাও</button></div>
+
+<div id="end" class="ov hide"><h1 style="font-size:46px">খেলা শেষ!</h1><div id="es" style="font-size:22px"></div><div id="rw" style="font-size:18px;min-height:26px"></div>
+<button id="again" class="big">আবার খেলো</button><button id="tomenu">মেনু</button></div>
+
+<div id="gh"><svg viewBox="0 0 80 100"><path d="M10 48C10 24 24 8 40 8s30 16 30 40v46l-10-9-10 9-10-9-10 9-10-9-10 9z" fill="#fff" fill-opacity=".92"/><ellipse cx="30" cy="42" rx="5" ry="7" fill="#1a1a2e"/><ellipse cx="50" cy="42" rx="5" ry="7" fill="#1a1a2e"/><ellipse cx="40" cy="62" rx="5.5" ry="8" fill="#1a1a2e"/></svg></div>
+</div><script>
+const $=id=>document.getElementById(id);
+const C=$('c'),X=C.getContext('2d');
+const SK=[['নীল বাসুকি','#35d0ff','#1b6dff'],['সবুজ অজগর','#7dff6b','#23a043'],['আগুন কেউটে','#ffa24d','#ff3b3b'],['রামধনু'],['বেগুনি নাগ','#d08bff','#6a2cff'],['সোনালি','#ffe066','#d18a00'],['জেব্রা','#ffffff','#2a3340']];
+const col=(k,i)=>k==3?`hsl(${i*14%360} 90% 60%)`:((i>>1)%2?SK[k][2]:SK[k][1]);
+const NM=['বাঘা','টুনি','রাজু','মিনা','কালু','শাপলা','ঝিনুক','তুফান','পলাশ','নীলা','বিজলী','সজল','ময়না','ফুল্লরা','দুর্জয়'];
+const WS=3000;
+let S={sound:1,bots:12,grid:1,name:'',skin:0},hs=0,snakes=[],food=[],me=null,run=0,cam={x:WS/2,y:WS/2},boost=0,mx=0,my=0,W,H,dpr,AC,z=1,fr=0;
+try{Object.assign(S,JSON.parse(localStorage.getItem('hs_set')||'{}'));hs=+localStorage.getItem('hs_best')||0}catch(e){}
+const save=()=>{try{localStorage.setItem('hs_set',JSON.stringify(S));localStorage.setItem('hs_best',hs)}catch(e){}};
+let A={coins:0,pot:{m:1,z:1,s:1},own:[0,1,2]};try{Object.assign(A,JSON.parse(localStorage.getItem('hs_acc')||'{}'))}catch(e){}if(typeof A.pot!='object')A.pot={m:A.pot|0,z:0,s:0};
+const saveA=()=>{try{localStorage.setItem('hs_acc',JSON.stringify(A))}catch(e){}};
+const PR=[0,0,0,300,150,250,100];let kg=[],coins=[],pots=[],zf=1,jAng=null,jid=null,bid=null;
+const PC={m:'#b06cff',z:'#35b8ff',s:'#ff9a3d'},PD={m:'M5 3v9a7 7 0 0 0 14 0V3h-4v9a3 3 0 0 1-6 0V3z',z:'M10 3a7 7 0 1 0 4.2 12.6l5 5 1.8-1.8-5-5A7 7 0 0 0 10 3zm0 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8z',s:'M13 2 4 14h6l-1 8 9-12h-6z'},GP=new Path2D('M10 48C10 24 24 8 40 8s30 16 30 40v46l-10-9-10 9-10-9-10 9-10-9-10 9z'),PP={};for(const k in PD)PP[k]=new Path2D(PD[k]);
+function gp(n){for(let i=0;i<n;i++)A.pot['mzs'[Math.random()*3|0]]++}
+let rot=0;
+function rs(){dpr=devicePixelRatio||1;const iw=innerWidth,ih=innerHeight;rot=ih>iw;W=rot?ih:iw;H=rot?iw:ih;const g=$('stg').style;g.width=W+'px';g.height=H+'px';g.transform=rot?`translateX(${iw}px) rotate(90deg)`:'none';C.width=W*dpr;C.height=H*dpr;$('stg').classList.toggle('sm',H<480)}
+addEventListener('resize',rs);rs();
+
+const R=s=>9+Math.min(14,s.sc/60), L=s=>14+(s.sc/4|0);
+const rf=()=>({x:20+Math.random()*(WS-40),y:20+Math.random()*(WS-40),c:`hsl(${Math.random()*360|0} 90% 62%)`,v:1,r:4+Math.random()*3});
+const mkp=()=>({x:60+Math.random()*(WS-120),y:60+Math.random()*(WS-120),t:'mzs'[Math.random()*3|0]});
+const cn=()=>({x:40+Math.random()*(WS-80),y:40+Math.random()*(WS-80)});
+function mk(bot,name,k){const a=Math.random()*6.28,x=300+Math.random()*(WS-600),y=300+Math.random()*(WS-600);
+ const s={bot,name,k,a,t:a,sc:0,seg:[],al:1,bt:0,tm:0,bo:0,rt:150,fx:{m:0,z:0,s:0},fd:{m:1,z:1,s:1}};
+ for(let i=0;i<14;i++)s.seg.push({x:x-Math.cos(a)*i*6,y:y-Math.sin(a)*i*6});return s}
+function bot(){let s;do{s=mk(1,NM[Math.random()*NM.length|0],Math.random()*7|0)}while(me&&Math.hypot(s.seg[0].x-me.seg[0].x,s.seg[0].y-me.seg[0].y)<700);s.sc=Math.random()*200|0;return s}
+function init(p){snakes=[];food=[];me=null;kg=[];coins=[];for(let i=0;i<30;i++)coins.push(cn());pots=[];for(let i=0;i<14;i++)pots.push(mkp());for(let i=0;i<280;i++)food.push(rf());
+ if(p){me=mk(0,S.name||'তুমি',S.skin);snakes.push(me)}
+ for(let i=0;i<S.bots;i++)snakes.push(bot())}
+function beep(f){if(!S.sound||!AC||beep.l==fr)return;beep.l=fr;const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;g.gain.value=.03;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+.05)}
+function dead(){const g=$('gh');g.style.left=W/2+'px';g.style.top=H/2+'px';g.classList.remove('go');void g.offsetWidth;g.classList.add('go');
+ if(!S.sound||!AC)return;const t=AC.currentTime,o=AC.createOscillator(),v=AC.createOscillator(),l=AC.createGain(),g2=AC.createGain();
+ o.type='sawtooth';o.frequency.setValueAtTime(440,t);o.frequency.exponentialRampToValueAtTime(70,t+.8);
+ v.frequency.value=9;l.gain.value=25;v.connect(l);l.connect(o.frequency);
+ g2.gain.setValueAtTime(.07,t);g2.gain.exponentialRampToValueAtTime(.001,t+.8);o.connect(g2);g2.connect(AC.destination);o.start(t);v.start(t);o.stop(t+.8);v.stop(t+.8)}
+function kill(s,by){s.al=0;if(by==me&&me&&s!=me){const q=s.seg[0];kg.push({x:q.x,y:q.y,n:s.name,t:0});const d=document.createElement('div');d.textContent=s.name+' তোমার গায়ে ঠেকে মরল';$('kf').appendChild(d);setTimeout(()=>d.remove(),2700);beep(300)}
+ const n=s.seg.length;for(let i=0;i<n;i+=2)food.push({x:s.seg[i].x,y:s.seg[i].y,c:col(s.k,i),v:3,r:6+Math.random()*3,d:1});if(s==me)dead()}
+
+function free(s,a,d){const h=s.seg[0],x=h.x+Math.cos(a)*d,y=h.y+Math.sin(a)*d;if(x<40||y<40||x>WS-40||y>WS-40)return 0;
+ for(const o of snakes){if(o==s||!o.al)continue;const m=R(s)+R(o)+6;for(let i=0;i<o.seg.length;i+=2){const q=o.seg[i];if(Math.abs(q.x-x)<m&&Math.abs(q.y-y)<m)return 0}}return 1}
+function ai(s){const h=s.seg[0];if(s.ag==null)s.ag=Math.random();
+ if(--s.tm<=0){s.tm=20+Math.random()*30;s.w=(Math.random()-.5)*1.4;s.f=null;let bd=0;
+  for(const f of food){const d2=(f.x-h.x)**2+(f.y-h.y)**2;if(d2<300*300){const v=f.v*f.v/(1+d2/2000);if(v>bd){bd=v;s.f=f}}}
+  for(const f of pots){const d2=(f.x-h.x)**2+(f.y-h.y)**2;if(d2<300*300){const v=64/(1+d2/2000);if(v>bd){bd=v;s.f=f}}}
+  s.v=null;let vd=380*380;if(s.ag>.35)for(const o of snakes){if(o==s||!o.al||o.sc>s.sc*.9)continue;const q=o.seg[0],d2=(q.x-h.x)**2+(q.y-h.y)**2;if(d2<vd){vd=d2;s.v=o}}}
+ let t=s.a+s.w*.3;s.bo=0;
+ if(s.f)t=Math.atan2(s.f.y-h.y,s.f.x-h.x);
+ if(s.v&&s.v.al){const q=s.v.seg[0];t=Math.atan2(q.y+Math.sin(s.v.a)*90-h.y,q.x+Math.cos(s.v.a)*90-h.x);s.bo=s.sc>80&&(q.x-h.x)**2+(q.y-h.y)**2<250*250}
+ for(const o of snakes){if(o==s||!o.al||o.sc<s.sc*1.1)continue;const q=o.seg[0],dx=q.x-h.x,dy=q.y-h.y;if(dx*dx+dy*dy<160*160){t=Math.atan2(-dy,-dx);s.bo=s.sc>60}}
+ if(!free(s,t,45)||!free(s,t,90)){let b=null;for(const d of[.5,-.5,1,-1,1.6,-1.6,2.4]){if(free(s,t+d,50)){b=t+d;break}}t=b==null?t+3:b}
+ s.t=t}
+
+function step(s){
+ if(s.bot)ai(s);else if(s==me){s.t=jAng!=null?jAng:Math.atan2(my-H/2,mx-W/2);s.bo=boost}
+ const df=((s.t-s.a+Math.PI*3)%(Math.PI*2))-Math.PI,mr=.09-Math.min(.04,s.sc/3000);
+ s.a+=Math.max(-mr,Math.min(mr,df));
+ const fx=s.fx,b=s.bo&&s.sc>20,sp=(b?5.2:3)*(fx.s>0?1.3:1),h=s.seg[0];if(fx.m>0)for(const f of food){const dx=h.x-f.x,dy=h.y-f.y,d=Math.hypot(dx,dy);if(d<170&&d>1){f.x+=dx/d*9;f.y+=dy/d*9}}
+ for(const k in fx)if(fx[k]>0)fx[k]--;
+ 
+ if(b&&++s.bt%8==0){s.sc-=2;const t=s.seg[s.seg.length-1];food.push({x:t.x,y:t.y,c:col(s.k,s.bt),v:2,r:4})}
+ h.x+=Math.cos(s.a)*sp;h.y+=Math.sin(s.a)*sp;
+ for(let i=1;i<s.seg.length;i++){const p=s.seg[i-1],q=s.seg[i],dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy);if(d>6){q.x+=dx/d*(d-6);q.y+=dy/d*(d-6)}}
+ while(s.seg.length<L(s)){const t=s.seg[s.seg.length-1];s.seg.push({x:t.x,y:t.y})}
+ while(s.seg.length>L(s))s.seg.pop();
+ const r=R(s);
+ for(let i=food.length;i--;){const f=food[i];if(Math.abs(f.x-h.x)<r+16&&Math.abs(f.y-h.y)<r+16&&Math.hypot(f.x-h.x,f.y-h.y)<r+f.r+8){s.sc+=f.v;food.splice(i,1);if(s==me)beep(620)}}
+ if(s==me)for(let i=coins.length;i--;){const c=coins[i];if(Math.hypot(c.x-h.x,c.y-h.y)<r+14){coins.splice(i,1);A.coins++;beep(900)}}
+ for(let i=pots.length;i--;){const c=pots[i];if(Math.hypot(c.x-h.x,c.y-h.y)<r+16){pots.splice(i,1);s.fx[c.t]=1200;s.fd[c.t]=1200;if(s==me)beep(1000)}}
+ if(h.x<0||h.y<0||h.x>WS||h.y>WS)return kill(s);
+ for(const o of snakes){if(o==s||!o.al)continue;const m=(r+R(o))*.8;
+  for(let i=0;i<o.seg.length;i+=2){const q=o.seg[i];if(Math.abs(q.x-h.x)<m&&Math.abs(q.y-h.y)<m&&Math.hypot(q.x-h.x,q.y-h.y)<m)return kill(s,o)}}}
+
+function update(){fr++;for(const g of kg)g.t++;kg=kg.filter(g=>g.t<110);
+ for(let i=0;i<snakes.length;i++){const s=snakes[i];if(s.al)step(s);else if(s.bot&&--s.rt<=0)snakes[i]=bot()}
+ for(let i=0;i<2&&food.length<320;i++)food.push(rf());if(coins.length<30)coins.push(cn());if(pots.length<14&&fr%90==0)pots.push(mkp());
+ if(me&&!me.al&&run){run=0;hs=Math.max(hs,me.sc|0);save();const rk=1+snakes.filter(q=>q!=me&&q.al&&q.sc>me.sc).length,sc=me.sc|0;
+  setTimeout(()=>{$('es').textContent='স্কোর '+sc+' | সেরা '+hs+' | র‍্যাংক '+rk;$('rw').innerHTML=reward(rk);bindRw();$('end').classList.remove('hide');for(const i of['hud','lb','pb'])$(i).classList.add('hide')},800)}
+ if(run&&fr%6==0)hud();if(run&&fr%150==0)saveA()}
+function hudfx(){for(const b of document.querySelectorAll('#pb b'))b.textContent=A.pot[b.dataset.t];
+ $('fx').innerHTML=['m','z','s'].filter(t=>me.fx[t]>0).map(t=>{const f=me.fx[t]/me.fd[t];return `<svg viewBox="0 0 44 44" width="44" height="44"><circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="4"/><circle cx="22" cy="22" r="19" fill="none" stroke="hsl(${f*120} 90% 55%)" stroke-width="4" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="${119.4*(1-f)}" transform="rotate(-90 22 22)"/><circle cx="22" cy="22" r="14" fill="${PC[t]}"/><path d="${PD[t]}" transform="translate(11.5 11.5) scale(.45)" fill="#fff" fill-rule="evenodd"/></svg>`}).join('')}
+function hud(){$('hud').textContent='স্কোর '+(me.sc|0)+'   কয়েন '+A.coins;hudfx();
+ const t=snakes.filter(s=>s.al).sort((a,b)=>b.sc-a.sc).slice(0,5);
+ $('lb').innerHTML=t.map((s,i)=>`<div class="${s==me?'me':''}"><span>${i+1}. ${s.name}</span><span>${s.sc|0}</span></div>`).join('')}
+
+function ico(x,y,r,t){X.fillStyle='rgba(255,255,255,.18)';X.beginPath();X.arc(x,y,r*1.5,0,6.3);X.fill();X.fillStyle=PC[t];X.beginPath();X.arc(x,y,r,0,6.3);X.fill();X.save();X.translate(x-r*.6,y-r*.6);X.scale(r*1.2/24,r*1.2/24);X.fillStyle='#fff';X.fill(PP[t],'evenodd');X.restore()}
+function draw(){
+ X.setTransform(dpr,0,0,dpr,0,0);X.fillStyle='#07121f';X.fillRect(0,0,W,H);
+ const f=me&&me.al?me:(snakes.find(s=>s.al)||snakes[0]);if(!f)return;const h=f.seg[0];
+ cam.x+=(h.x-cam.x)*.15;cam.y+=(h.y-cam.y)*.15;
+ z=Math.min(1,Math.max(.6,Math.min(W,H)/750))*Math.max(.6,1-f.sc/2500);zf+=((f.fx.z>0?.7:1)-zf)*.06;z*=zf;
+ X.translate(W/2,H/2);X.scale(z,z);X.translate(-cam.x,-cam.y);
+ const vw=W/z/2+40,vh=H/z/2+40,vis=(x,y)=>Math.abs(x-cam.x)<vw&&Math.abs(y-cam.y)<vh;
+ X.fillStyle='#0b1a2c';X.fillRect(0,0,WS,WS);
+ if(S.grid){X.strokeStyle='rgba(125,255,107,.06)';X.lineWidth=2;X.beginPath();
+  for(let x=Math.max(0,Math.floor((cam.x-vw)/80)*80);x<Math.min(WS,cam.x+vw);x+=80){X.moveTo(x,cam.y-vh);X.lineTo(x,cam.y+vh)}
+  for(let y=Math.max(0,Math.floor((cam.y-vh)/80)*80);y<Math.min(WS,cam.y+vh);y+=80){X.moveTo(cam.x-vw,y);X.lineTo(cam.x+vw,y)}X.stroke()}
+ X.strokeStyle='#ff3b3b';X.lineWidth=8;X.strokeRect(0,0,WS,WS);
+ for(const o of food){if(!vis(o.x,o.y))continue;X.fillStyle=o.c;X.globalAlpha=.25;X.beginPath();X.arc(o.x,o.y,o.r*2,0,6.3);X.fill();X.globalAlpha=1;X.beginPath();X.arc(o.x,o.y,o.r,0,6.3);X.fill()}
+ for(const c of coins){if(!vis(c.x,c.y))continue;X.fillStyle='#ffd84d';X.beginPath();X.arc(c.x,c.y,9,0,6.3);X.fill();X.strokeStyle='#b8860b';X.lineWidth=2;X.beginPath();X.arc(c.x,c.y,5.5,0,6.3);X.stroke()}
+ for(const c of pots){if(!vis(c.x,c.y))continue;ico(c.x,c.y,13+Math.sin(fr/12)*1.5,c.t)}
+ for(const s of snakes){if(!s.al)continue;const r=R(s);
+  for(let i=s.seg.length-1;i>=0;i--){const q=s.seg[i];if(!vis(q.x,q.y))continue;
+   X.fillStyle=col(s.k,i);X.beginPath();X.arc(q.x,q.y,r*(i<3?1:1-Math.min(.3,i/s.seg.length*.3)),0,6.3);X.fill()}
+  if(s.bo&&s.sc>20){X.strokeStyle='rgba(255,255,255,.5)';X.lineWidth=3;X.beginPath();X.arc(s.seg[0].x,s.seg[0].y,r+6,0,6.3);X.stroke()}
+  const q=s.seg[0],ca=Math.cos(s.a),sa=Math.sin(s.a);
+  for(const e of[-1,1]){const ex=q.x+ca*r*.4-sa*r*.5*e,ey=q.y+sa*r*.4+ca*r*.5*e;
+   X.fillStyle='#fff';X.beginPath();X.arc(ex,ey,r*.36,0,6.3);X.fill();X.fillStyle='#111';X.beginPath();X.arc(ex+ca*r*.12,ey+sa*r*.12,r*.18,0,6.3);X.fill()}
+  X.fillStyle='rgba(232,244,255,.85)';X.font='bold 14px Hind Siliguri,sans-serif';X.textAlign='center';X.fillText(s.name,q.x,q.y-r-10);
+  const ak=['m','z','s'].filter(t=>s.fx[t]>0);ak.forEach((t,j)=>{const f=s.fx[t]/s.fd[t],ix=q.x+(j-(ak.length-1)/2)*28,iy=q.y-r-36;ico(ix,iy,8,t);X.strokeStyle=`hsl(${f*120} 90% 55%)`;X.lineWidth=3;X.beginPath();X.arc(ix,iy,12,-1.57,-1.57+6.283*f);X.stroke()})}
+ for(const g of kg){const y=g.y-g.t*.7;X.globalAlpha=Math.max(0,1-g.t/110);X.save();X.translate(g.x-22,y-28);X.scale(.55,.55);X.fillStyle='#fff';X.fill(GP);X.fillStyle='#1a1a2e';for(const e of[[30,42,5,7],[50,42,5,7],[40,62,5.5,8]]){X.beginPath();X.ellipse(e[0],e[1],e[2],e[3],0,0,6.3);X.fill()}X.restore();X.fillStyle='#ffd0d0';X.font='bold 14px Hind Siliguri,sans-serif';X.textAlign='center';X.fillText(g.n,g.x,y+42);X.globalAlpha=1}
+ X.setTransform(dpr,0,0,dpr,0,0);
+ if(run){const m=96,mx0=W-m-12,my0=H-m-12-(parseFloat(getComputedStyle(document.documentElement).paddingBottom)||0);
+  X.fillStyle='rgba(7,18,31,.65)';X.fillRect(mx0,my0,m,m);X.strokeStyle='#ff3b3b';X.lineWidth=1;X.strokeRect(mx0,my0,m,m);for(const f of food)if(f.d){X.fillStyle='#ffe066';X.fillRect(mx0+f.x/WS*m-1,my0+f.y/WS*m-1,2,2)}for(const c of pots){X.fillStyle=PC[c.t];X.fillRect(mx0+c.x/WS*m-2,my0+c.y/WS*m-2,4,4)}for(const g of kg){X.fillStyle=g.t%20<10?'#ff5a5a':'#fff';X.fillRect(mx0+g.x/WS*m-3,my0+g.y/WS*m-3,6,6)}
+  for(const s of snakes){if(!s.al)continue;X.fillStyle=s==me?'#7dff6b':'#8aa6c2';X.fillRect(mx0+s.seg[0].x/WS*m-2,my0+s.seg[0].y/WS*m-2,s==me?5:3,s==me?5:3)}}}
+
+let last=0,acc=0;
+function loop(t){requestAnimationFrame(loop);acc+=Math.min(50,t-last);last=t;while(acc>16.7){acc-=16.7;update()}draw()}
+
+function start(){try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}
+ if(!AC)try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}
+ S.name=$('nm').value.trim();save();if(!A.own.includes(S.skin))S.skin=0;init(true);run=1;boost=0;jAng=null;jid=bid=null;mx=W/2;my=H/2;JY.style.opacity=0;BT.style.opacity=0;$('fx').innerHTML='';
+ for(const i of['menu','end'])$(i).classList.add('hide');for(const i of['hud','lb','pb'])$(i).classList.remove('hide');hud()}
+function menu(){run=0;init(false);$('fx').innerHTML='';$('end').classList.add('hide');$('menu').classList.remove('hide');$('best').textContent=hs?'সেরা স্কোর: '+hs:'';wal()}
+
+function wal(){const t='কয়েন '+A.coins;$('wal').textContent=t;$('coin').textContent=t;buildSk();buildShp()}
+function buildSk(){$('sks').innerHTML=SK.map((k,i)=>`<button class="sk" data-i="${i}"><i style="background:${k[1]?`linear-gradient(90deg,${k[1]},${k[2]})`:'linear-gradient(90deg,red,orange,yellow,lime,cyan,violet)'}"></i>${k[0]}${A.own.includes(i)?'':'<br>'+PR[i]+' কয়েন'}</button>`).join('');pick()}
+const pick=()=>document.querySelectorAll('.sk').forEach(b=>b.classList.toggle('on',+b.dataset.i==S.skin));
+const say=t=>{$('msg').textContent=t};
+$('sks').onclick=e=>{const b=e.target.closest('.sk');if(!b)return;const i=+b.dataset.i;
+ if(!A.own.includes(i)){if(A.coins>=PR[i]){A.coins-=PR[i];A.own.push(i);saveA();say(SK[i][0]+' কেনা হয়েছে')}else{say('কয়েন কম পড়ছে');return}}
+ S.skin=i;save();wal()};
+const NP={m:'চুম্বক',z:'জুম',s:'স্পিড'};
+function buildShp(){$('shp').innerHTML=['m','z','s'].map(t=>`<button class="pbuy" data-t="${t}"><svg viewBox="0 0 24 24" width="22" height="22"><path d="${PD[t]}" fill="${PC[t]}" fill-rule="evenodd"/></svg><br>${NP[t]} (${A.pot[t]})<br>৫০ কয়েন</button>`).join('')}
+$('shp').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(A.coins>=50){A.coins-=50;A.pot[b.dataset.t]++;saveA();wal();say('পোশন কিনেছ')}else say('৫০ কয়েন লাগবে')};
+$('shb').onclick=()=>{$('menu').classList.add('hide');$('shop').classList.remove('hide');say('');wal()};
+$('shback').onclick=()=>{$('shop').classList.add('hide');menu()};
+$('nm').value=S.name;
+function reward(rk){let h;
+ if(rk==1){gp(5);A.coins+=100;h='১ম স্থান! ৫টা পোশন আর ১০০ কয়েন পেলে'}
+ else if(rk==2){gp(2);A.coins+=60;h='২য় স্থান! ২টা পোশন আর ৬০ কয়েন পেলে'}
+ else if(rk==3)h='৩য় স্থান! একটা বেছে নাও<br><button id="r1">১টা পোশন</button> <button id="r2">৪০ কয়েন</button>';
+ else if(rk<=10){A.coins+=20;h=rk+' নম্বর! ২০ কয়েন পেলে'}
+ else h='টপ ১০-এ এলে কয়েন পাবে';saveA();return h}
+function bindRw(){const a=$('r1');if(!a)return;a.onclick=()=>{gp(1);saveA();$('rw').textContent='১টা পোশন পেলে'};$('r2').onclick=()=>{A.coins+=40;saveA();$('rw').textContent='৪০ কয়েন পেলে'}}
+$('play').onclick=start;$('again').onclick=start;$('tomenu').onclick=menu;
+$('st').onclick=()=>{$('menu').classList.add('hide');$('set').classList.remove('hide')};
+$('sback').onclick=()=>{S.bots=+$('sb').value;S.sound=$('ss').checked?1:0;S.grid=$('sg').checked?1:0;save();$('set').classList.add('hide');menu()};
+$('sb').value=S.bots;$('sbv').textContent=S.bots;$('sb').oninput=()=>$('sbv').textContent=$('sb').value;$('ss').checked=!!S.sound;$('sg').checked=!!S.grid;
+const LX=e=>rot?e.clientY:e.clientX,LY=e=>rot?innerWidth-e.clientX:e.clientY;
+const put=(el,x,y)=>{el.style.transform=`translate(${x}px,${y}px)`};
+const JY=$('jy'),BT=$('bt'),KN=$('kn');let jx=0,jy=0;
+C.addEventListener('pointerdown',e=>{const x=LX(e),y=LY(e);
+ if(e.pointerType=='mouse'){mx=x;my=y;jAng=null;boost=1;return}
+ if(x>=W/2&&jid==null){jid=e.pointerId;jx=x;jy=y;put(JY,x,y);JY.style.opacity=1;KN.setAttribute('cx',60);KN.setAttribute('cy',60)}
+ else if(x<W/2&&bid==null){bid=e.pointerId;put(BT,x,y);BT.style.opacity=1;boost=1}});
+addEventListener('pointermove',e=>{const x=LX(e),y=LY(e);
+ if(e.pointerType=='mouse'){mx=x;my=y;jAng=null}
+ else if(e.pointerId==jid){const dx=x-jx,dy=y-jy,d=Math.hypot(dx,dy);if(d>8)jAng=Math.atan2(dy,dx);const k=Math.min(d,48)/(d||1);KN.setAttribute('cx',60+dx*k);KN.setAttribute('cy',60+dy*k)}});
+const up=e=>{if(e.pointerType=='mouse')boost=0;if(e.pointerId==jid){jid=null;JY.style.opacity=0}if(e.pointerId==bid){bid=null;BT.style.opacity=0;boost=0}};
+addEventListener('pointerup',up);addEventListener('pointercancel',up);
+$('pb').innerHTML=['m','z','s'].map(t=>`<button data-t="${t}" style="background:${PC[t]}88"><svg viewBox="0 0 24 24" width="24" height="24"><path d="${PD[t]}" fill="#fff" fill-rule="evenodd"/></svg><b data-t="${t}">0</b></button>`).join('');
+$('pb').onclick=e=>{const b=e.target.closest('button');if(!b||!run)return;const t=b.dataset.t;if(A.pot[t]>0){A.pot[t]--;me.fx[t]=1800;me.fd[t]=1800;saveA();hud()}};
+addEventListener('keydown',e=>{if(e.code=='Space'&&run){boost=1;e.preventDefault()}});
+addEventListener('keyup',e=>{if(e.code=='Space')boost=0});
+menu();requestAnimationFrame(loop);
+</script></body></html>
